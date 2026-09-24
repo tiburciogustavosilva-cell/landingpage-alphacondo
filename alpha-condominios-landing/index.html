@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="description" content="Alpha Condomínios: chamados, reservas, encomendas, avisos e manutenção predial num painel só." />
+<link rel="icon" type="image/png" href="assets/emblema.png" />
+<title>Alpha Condomínios</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Nunito:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  /* Tema único claro (como no sistema). Cores tiradas da logo e do mascote. */
+  :root {
+    color-scheme: light;
+    --navy: #0B2545;
+    --navy-2: #163A6B;
+    --polo: #2F5BA8;
+    --gold: #C9A45C;
+    --gold-deep: #9C7632;
+    --ground: #F4F7FB;
+    --surface: #FFFFFF;
+    --line: #DCE4EE;
+    --ink: #0B2545;
+    --muted: #56657C;
+    --success: #1F9D55;
+    --warning: #E9A11B;
+    --info: #2F6FDE;
+    --destructive: #D93636;
+    --radius: 0.75rem;
+    --gradient-primary: linear-gradient(135deg, #D8B873, #B88E43);
+    --shadow-glow: 0 8px 30px -8px rgba(201, 164, 92, .6);
+    --shadow-card: 0 1px 2px rgba(11, 37, 69, .05), 0 10px 30px -12px rgba(11, 37, 69, .18);
+    --f-head: "Nunito", ui-rounded, "Segoe UI", system-ui, sans-serif;
+    --f-body: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--ground); color: var(--ink);
+    font: 400 16px/1.6 var(--f-body);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 { font-family: var(--f-head); line-height: 1.12; margin: 0; text-wrap: balance; letter-spacing: -.01em; }
+  p { margin: 0; }
+  a { color: inherit; }
+  .wrap { max-width: 1160px; margin-inline: auto; padding-inline: 20px; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font: 700 12px/1 var(--f-body); letter-spacing: .14em; text-transform: uppercase; color: var(--gold-deep);
+  }
+  .eyebrow::before { content: ""; width: 18px; height: 2px; background: var(--gold); border-radius: 2px; }
+  .lead { color: var(--muted); font-size: 18px; max-width: 58ch; }
+  :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
+
+  /* Botões */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 12px 20px; border-radius: var(--radius); border: 1px solid transparent;
+    font: 700 15px/1 var(--f-body); text-decoration: none; cursor: pointer;
+    transition: transform .15s ease, box-shadow .2s ease, background .2s ease;
+  }
+  .btn svg { width: 18px; height: 18px; }
+  .btn-brand { background: var(--gradient-primary); color: var(--navy); box-shadow: var(--shadow-glow); }
+  .btn-brand:hover { transform: translateY(-1px); box-shadow: 0 12px 34px -8px rgba(201,164,92,.75); }
+  .btn-navy { background: var(--navy); color: #fff; }
+  .btn-navy:hover { background: var(--navy-2); }
+  .btn-ghost { background: var(--surface); color: var(--navy); border-color: var(--line); }
+  .btn-ghost:hover { border-color: var(--navy); }
+  .btn-lg { padding: 16px 26px; font-size: 16px; }
+
+  /* Logo recortada da imagem enviada */
+  .emblem { display: block; width: 52px; height: auto; }
+  .wordmark { font-family: "Montserrat", var(--f-body); line-height: 1; color: var(--navy); }
+  .wordmark b { display: block; font-weight: 700; font-size: 20px; letter-spacing: .06em; }
+  .wordmark span { display: block; font-weight: 600; font-size: 8.5px; letter-spacing: .32em; margin-top: 3px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+
+  /* Nav */
+  header.nav {
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+    background: rgba(244, 247, 251, .86); backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(220, 228, 238, .7);
+  }
+  .nav-in { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 70px; }
+  .nav-links { display: flex; gap: 28px; font-weight: 600; font-size: 15px; }
+  .nav-links a { text-decoration: none; color: var(--muted); }
+  .nav-links a:hover { color: var(--navy); }
+  .nav-cta { display: flex; gap: 10px; }
+  @media (max-width: 880px) { .nav-links { display: none; } }
+  @media (max-width: 460px) { .nav-cta .btn-ghost { display: none; } }
+
+  /* Hero */
+  .hero { position: relative; overflow: hidden; padding-block: 56px 40px; }
+  .hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .hero-grid { position: relative; display: grid; grid-template-columns: 1.05fr .95fr; gap: 40px; align-items: center; }
+  .hero h1 { font-size: clamp(40px, 6vw, 68px); font-weight: 900; color: var(--navy); margin-block: 18px 20px; }
+  .hero h1 em { font-style: normal; background: linear-gradient(90deg, var(--gold-deep), var(--gold)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+  .hero-note { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 26px; font-size: 14px; color: var(--muted); }
+  .hero-note span { display: inline-flex; align-items: center; gap: 6px; }
+  .hero-note svg { width: 16px; height: 16px; color: var(--success); }
+
+  .stage { position: relative; }
+  .mascot {
+    position: relative; width: 100%; max-width: 470px; margin-inline: auto;
+  }
+  .mascot img {
+    display: block; width: 100%; height: auto;
+    filter: drop-shadow(0 18px 24px rgba(11, 37, 69, .12));
+  }
+  .stage::before {
+    content: ""; position: absolute; left: 50%; top: 52%; width: 82%; aspect-ratio: 1; transform: translate(-50%, -50%);
+    border-radius: 50%; background: radial-gradient(circle, #fff 0 58%, rgba(255,255,255,0) 71%);
+  }
+  .float {
+    position: absolute; background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-card);
+    padding: 12px 14px; font-size: 13px; line-height: 1.35; min-width: 190px; border: 1px solid var(--line);
+    animation: bob 6s ease-in-out infinite;
+  }
+  .float small { display: block; color: var(--muted); font-size: 11.5px; }
+  .float strong { font-weight: 700; }
+  .float .row { display: flex; align-items: center; gap: 10px; }
+  .ico-dot { flex: none; width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; }
+  .ico-dot svg { width: 18px; height: 18px; }
+  .f1 { top: 12%; left: -4%; }
+  .f2 { top: 44%; right: -6%; animation-delay: -2s; }
+  .f3 { bottom: 6%; left: 2%; animation-delay: -4s; }
+  @keyframes bob { 50% { transform: translateY(-8px); } }
+  @media (max-width: 920px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .stage { max-width: 480px; margin-inline: auto; width: 100%; }
+  }
+  @media (max-width: 520px) {
+    .float { min-width: 0; padding: 9px 11px; font-size: 12px; }
+    .float small { font-size: 10.5px; }
+    .ico-dot { width: 28px; height: 28px; }
+    .f1 { left: 0; } .f2 { right: 0; } .f3 { left: 0; }
+  }
+
+  /* Perfis */
+  .profiles { padding-block: 24px 72px; }
+  .profiles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .profile { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: start; }
+  .profile .ico-dot { width: 44px; height: 44px; border-radius: 12px; background: #EEF2F8; color: var(--navy); }
+  .profile h3 { font-size: 19px; font-weight: 800; }
+  .profile p { color: var(--muted); font-size: 14.5px; margin-top: 4px; }
+  .profile code { font: 600 12.5px/1 ui-monospace, "Cascadia Code", Consolas, monospace; background: #F1F4F9; padding: 3px 6px; border-radius: 6px; color: var(--navy-2); }
+  @media (max-width: 860px) { .profiles-grid { grid-template-columns: 1fr; } }
+
+  /* Seções */
+  section.block { padding-block: 88px; }
+  .head { display: grid; gap: 14px; margin-bottom: 40px; }
+  .head h2 { font-size: clamp(30px, 4vw, 44px); font-weight: 900; color: var(--navy); }
+
+  /* Kanban */
+  .kanban-sec { background: var(--navy); color: #fff; position: relative; overflow: hidden; }
+  .kanban-sec .head h2 { color: #fff; }
+  .kanban-sec .lead { color: #B9C6DA; }
+  .kanban-sec .eyebrow { color: var(--gold); }
+  .board-shell { background: #F4F7FB; border-radius: 18px; padding: 18px; box-shadow: 0 30px 80px -30px rgba(0,0,0,.6); color: var(--ink); }
+  .board-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .board-top h3 { font-size: 18px; font-weight: 800; }
+  .legend { display: flex; gap: 14px; font-size: 13px; color: var(--muted); flex-wrap: wrap; }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+  .board { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+  .col { background: #E9EEF5; border-radius: var(--radius); padding: 12px; min-height: 260px; transition: background .2s, box-shadow .2s; }
+  .col.over { background: #E2E9F3; box-shadow: inset 0 0 0 2px var(--gold); }
+  .col-h { display: flex; justify-content: space-between; align-items: center; font: 800 14px/1 var(--f-head); margin: 2px 4px 12px; }
+  .count { font: 700 12px/1 var(--f-body); background: #fff; border-radius: 99px; padding: 4px 9px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .cards { display: grid; gap: 10px; }
+  .kcard {
+    background: #fff; border-radius: 10px; padding: 12px 12px 12px 15px; box-shadow: 0 1px 2px rgba(11,37,69,.08);
+    position: relative; cursor: grab; user-select: none; border: 1px solid transparent; transition: transform .15s, box-shadow .15s;
+  }
+  .kcard:hover { box-shadow: 0 6px 16px -6px rgba(11,37,69,.25); }
+  .kcard.dragging { opacity: .5; }
+  .kcard::before { content: ""; position: absolute; left: 0; top: 10px; bottom: 10px; width: 4px; border-radius: 0 4px 4px 0; background: var(--p); }
+  .kcard h4 { font: 700 14px/1.3 var(--f-body); }
+  .kmeta { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; font-size: 12px; color: var(--muted); }
+  .kmeta span { display: inline-flex; align-items: center; gap: 4px; }
+  .kmeta svg { width: 13px; height: 13px; }
+  .pill { font: 700 11px/1 var(--f-body); padding: 4px 8px; border-radius: 99px; color: var(--p); background: color-mix(in srgb, var(--p) 13%, #fff); }
+  .p-alta { --p: var(--destructive); } .p-media { --p: var(--warning); } .p-baixa { --p: var(--info); }
+  .p-media .pill { color: #9A6505; }
+  .board-hint { margin-top: 12px; font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+  .board-hint svg { width: 15px; height: 15px; }
+  @media (max-width: 760px) {
+    .board-scroll { overflow-x: auto; margin-inline: -18px; padding-inline: 18px; }
+    .board { grid-template-columns: repeat(3, 250px); }
+  }
+
+  /* Módulos */
+  .mods { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .mod { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; transition: border-color .2s, transform .2s; }
+  .mod:hover { border-color: var(--gold); transform: translateY(-2px); }
+  .mod .ico-dot { width: 40px; height: 40px; background: #EEF2F8; color: var(--navy); margin-bottom: 14px; }
+  .mod h3 { font-size: 17px; font-weight: 800; }
+  .mod p { color: var(--muted); font-size: 14px; margin-top: 6px; line-height: 1.5; }
+  .mod .tag { display: inline-block; margin-top: 10px; font: 700 11px/1 var(--f-body); letter-spacing: .04em; color: var(--gold-deep); background: #F8F1E2; padding: 5px 8px; border-radius: 6px; }
+  .mod.wide { grid-column: span 2; background: var(--navy); border-color: var(--navy); color: #fff; }
+  .mod.wide .ico-dot { background: rgba(201,164,92,.18); color: var(--gold); }
+  .mod.wide p { color: #B9C6DA; }
+  .mod.wide .tag { background: rgba(201,164,92,.18); color: var(--gold); }
+  .xlsx { margin-top: 16px; border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,.12); font-size: 12.5px; }
+  .xlsx-scroll { overflow-x: auto; }
+  .xlsx table { width: 100%; border-collapse: collapse; min-width: 420px; font-variant-numeric: tabular-nums; }
+  .xlsx th, .xlsx td { text-align: left; padding: 7px 10px; border-bottom: 1px solid rgba(255,255,255,.08); white-space: nowrap; }
+  .xlsx th { background: rgba(255,255,255,.06); color: var(--gold); font-weight: 700; font-size: 11.5px; letter-spacing: .04em; text-transform: uppercase; }
+  .st { font-weight: 700; }
+  .st.ok { color: #5BD18C; } .st.warn { color: #F5C04E; } .st.late { color: #FF8A8A; }
+  @media (max-width: 1000px) { .mods { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .mods { grid-template-columns: 1fr; } .mod.wide { grid-column: auto; } }
+
+  /* Onboarding */
+  .onb { display: grid; grid-template-columns: 1.1fr .9fr; gap: 28px; align-items: start; }
+  .quiz { background: var(--surface); border-radius: 18px; box-shadow: var(--shadow-card); padding: 28px; border: 1px solid var(--line); }
+  .quiz-top { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+  .guide { flex: none; width: 64px; height: 64px; border-radius: 50%; overflow: hidden; position: relative; background: #fff; border: 2px solid var(--gold); }
+  .guide img { position: absolute; width: 252%; max-width: none; left: -91%; top: -3%; }
+  .bubble { background: #F1F4F9; border-radius: 14px 14px 14px 4px; padding: 10px 14px; font-size: 14px; color: var(--navy-2); font-weight: 600; }
+  .progress { display: flex; gap: 6px; margin-bottom: 18px; }
+  .progress i { flex: 1; height: 5px; border-radius: 99px; background: var(--line); transition: background .3s; }
+  .progress i.on { background: var(--gold); }
+  .q-step { font-size: 12.5px; font-weight: 700; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
+  .q-title { font: 800 24px/1.2 var(--f-head); color: var(--navy); margin: 6px 0 18px; }
+  .q-help { font-size: 14px; color: var(--muted); margin: -10px 0 16px; }
+  .yn { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .opt {
+    display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-radius: var(--radius); border: 1.5px solid var(--line);
+    background: #fff; font: 700 15px/1 var(--f-body); color: var(--navy); cursor: pointer; text-align: left; transition: border-color .15s, background .15s;
+  }
+  .opt:hover { border-color: #AFC0D6; }
+  .opt[aria-pressed="true"] { border-color: var(--gold); background: #FBF6EC; }
+  .opt svg { width: 18px; height: 18px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { padding: 9px 14px; border-radius: 99px; border: 1.5px solid var(--line); background: #fff; font: 600 14px/1 var(--f-body); color: var(--navy); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+  .chip svg { width: 14px; height: 14px; }
+  .chip[aria-pressed="true"] { border-color: var(--navy); background: var(--navy); color: #fff; }
+  .add-row { display: flex; gap: 8px; margin-top: 12px; }
+  .add-row input { flex: 1; min-width: 0; padding: 10px 12px; border-radius: 10px; border: 1.5px solid var(--line); font: 500 14px var(--f-body); color: var(--ink); background: #fff; }
+  .add-row input:focus { outline: none; border-color: var(--gold); }
+  .q-nav { display: flex; justify-content: space-between; gap: 10px; margin-top: 24px; }
+  .preview { background: var(--navy); color: #fff; border-radius: 18px; padding: 22px; position: sticky; top: 90px; }
+  .preview-h { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .preview-h b { font: 800 16px var(--f-head); }
+  .preview-h small { color: #B9C6DA; font-size: 12px; }
+  .side { display: grid; gap: 4px; }
+  .side-item { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 10px; font-size: 14px; font-weight: 600; color: #D6DFEC; transition: background .3s, opacity .3s; }
+  .side-item svg { width: 17px; height: 17px; color: var(--gold); }
+  .side-item .note { margin-left: auto; font-size: 11.5px; color: #8FA2BF; font-weight: 500; text-align: right; }
+  .side-item.fresh { background: rgba(201,164,92,.16); }
+  .side-item.off { opacity: .35; text-decoration: line-through; }
+  @media (max-width: 900px) { .onb { grid-template-columns: 1fr; } .preview { position: static; } }
+  @media (max-width: 420px) { .yn { grid-template-columns: 1fr; } .quiz { padding: 20px; } }
+
+  /* Segurança */
+  .trust { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; border-top: 1px solid var(--line); padding-top: 40px; }
+  .trust h3 { font-size: 19px; font-weight: 800; display: flex; align-items: center; gap: 10px; color: var(--navy); }
+  .trust h3 svg { width: 22px; height: 22px; color: var(--gold-deep); }
+  .trust p { color: var(--muted); font-size: 15px; margin-top: 8px; }
+  @media (max-width: 820px) { .trust { grid-template-columns: 1fr; gap: 24px; } }
+
+  /* CTA final */
+  .final { padding-block: 24px 88px; }
+  .final-card {
+    position: relative; overflow: hidden; background: var(--gradient-primary); border-radius: 22px; padding: 48px;
+    display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; box-shadow: var(--shadow-glow);
+  }
+  .final-card::before, .final-card::after { content: ""; position: absolute; border-radius: 50%; background: rgba(255,255,255,.16); }
+  .final-card::before { width: 320px; height: 320px; right: -80px; top: -140px; }
+  .final-card::after { width: 180px; height: 180px; left: 38%; bottom: -110px; }
+  .final-card h2 { font-size: clamp(28px, 3.6vw, 40px); font-weight: 900; color: var(--navy); position: relative; }
+  .final-card p { color: #3A3322; margin-top: 10px; font-size: 17px; position: relative; max-width: 52ch; }
+  .final-card .btn { position: relative; }
+  @media (max-width: 760px) { .final-card { grid-template-columns: 1fr; padding: 32px 24px; } }
+
+  footer { border-top: 1px solid var(--line); padding-block: 36px; }
+  .foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px; }
+  .foot-logo { display: block; width: 150px; height: auto; }
+  .foot small { color: var(--muted); font-size: 13.5px; }
+  .foot-links { display: flex; gap: 22px; font-size: 14px; }
+  .foot-links a { color: var(--muted); text-decoration: none; }
+
+  /* Abertura: frase letra a letra, depois a logo, depois o site */
+  .intro {
+    position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; align-content: center; gap: 36px;
+    padding: 24px; text-align: center; cursor: pointer;
+    background: radial-gradient(ellipse at 50% 40%, #FFFFFF 0%, var(--ground) 70%);
+    transition: opacity .8s ease, visibility 0s linear .8s;
+  }
+  .intro.out { opacity: 0; visibility: hidden; }
+  .intro-phrase { font: 900 clamp(32px, 6vw, 64px)/1.15 var(--f-head); color: var(--navy); letter-spacing: -.01em; max-width: 16ch; }
+  .intro-phrase .w { display: inline-block; white-space: nowrap; }
+  .intro-phrase .c { display: inline-block; opacity: 0; transform: translateY(12px); filter: blur(6px); animation: letter .6s cubic-bezier(.2,.7,.2,1) forwards; }
+  .intro-phrase .gold .c { color: var(--gold-deep); }
+  @keyframes letter { to { opacity: 1; transform: none; filter: blur(0); } }
+  .intro-logo { width: min(240px, 60vw); height: auto; opacity: 0; transform: scale(.94); }
+  .intro-logo.show { animation: logoIn 1s cubic-bezier(.2,.7,.2,1) forwards; }
+  @keyframes logoIn { to { opacity: 1; transform: none; } }
+  .intro-skip { position: absolute; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); font-size: 13px; color: var(--muted); }
+  body.intro-on { overflow: hidden; }
+  body.intro-on .rise { animation-play-state: paused; }
+
+  /* Entrada suave */
+  .rise { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; }
+  .d1 { animation-delay: .08s; } .d2 { animation-delay: .16s; } .d3 { animation-delay: .24s; } .d4 { animation-delay: .32s; }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="intro" id="intro" role="presentation">
+  <h2 class="intro-phrase" id="introPhrase" aria-label="Seu condomínio pronto para voar.">Seu condomínio pronto para voar.</h2>
+  <img class="intro-logo" id="introLogo" src="assets/logo.png" alt="Alpha Condomínios" />
+  <span class="intro-skip">Toque para pular</span>
+</div>
+<script>
+document.body.classList.add('intro-on');
+(function () {
+  /* ---------- Abertura ---------- */
+  const intro = document.getElementById('intro');
+  const phrase = document.getElementById('introPhrase');
+  const logo = document.getElementById('introLogo');
+  const STEP = 55; // ms entre uma letra e outra
+  let n = 0;
+  phrase.innerHTML = phrase.textContent.split(' ').map(word =>
+    `<span class="w${word.startsWith('voar') ? ' gold' : ''}" aria-hidden="true">` +
+    [...word].map(ch => `<span class="c" style="animation-delay:${(n++) * STEP}ms">${ch}</span>`).join('') +
+    '</span>').join(' ');
+  const phraseEnd = n * STEP + 600;
+  const timers = [];
+  let closed = false;
+  function closeIntro() {
+    if (closed) return; closed = true;
+    timers.forEach(clearTimeout);
+    intro.classList.add('out');
+    document.body.classList.remove('intro-on');
+  }
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    closeIntro();
+  } else {
+    timers.push(setTimeout(() => logo.classList.add('show'), phraseEnd + 150));
+    timers.push(setTimeout(closeIntro, phraseEnd + 150 + 1000 + 900));
+    intro.addEventListener('click', closeIntro);
+    addEventListener('keydown', e => { if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') closeIntro(); });
+  }
+
+})();
+</script>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#topo" aria-label="Alpha Condomínios — início">
+      <img class="emblem" src="assets/emblema.png" alt="" />
+      <span class="wordmark"><b>ALPHA</b><span>CONDOMÍNIOS</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Principal">
+      <a href="#chamados">Chamados</a>
+      <a href="#modulos">Módulos</a>
+      <a href="#configurar">Como começa</a>
+      <a href="#seguranca">Segurança</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost" href="#entrar">Entrar</a>
+      <a class="btn btn-brand" href="#cadastro">Criar conta</a>
+    </div>
+  </div>
+</header>
+
+<main id="topo">
+  <section class="hero">
+    <canvas id="lines" aria-hidden="true"></canvas>
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow rise">Gestão de condomínios</span>
+        <h1 class="rise d1">Tudo do condomínio, <em>num painel só.</em></h1>
+        <p class="lead rise d2">Chamados, reservas, encomendas, avisos e manutenção predial organizados para o síndico, a administradora e cada morador — sem planilha perdida e sem grupo de WhatsApp lotado.</p>
+        <div class="hero-actions rise d3">
+          <a class="btn btn-brand btn-lg" href="#cadastro">Cadastrar meu condomínio <i data-lucide="arrow-right"></i></a>
+          <a class="btn btn-ghost btn-lg" href="#chamados"><i data-lucide="play-circle"></i> Ver funcionando</a>
+        </div>
+        <div class="hero-note rise d4">
+          <span><i data-lucide="check-circle-2"></i> Configuração em 4 perguntas</span>
+          <span><i data-lucide="check-circle-2"></i> Dados isolados por condomínio</span>
+        </div>
+      </div>
+
+      <div class="stage rise d2">
+        <div class="mascot"><img src="assets/mascote.png" alt="Mascote da Alpha Condomínios: uma águia sorridente de camisa polo azul acenando" /></div>
+        <div class="float f1">
+          <div class="row">
+            <span class="ico-dot" style="background:#FDECEC;color:var(--destructive)"><i data-lucide="wrench"></i></span>
+            <div><strong>Vazamento na garagem</strong><small>Chamado · prioridade alta</small></div>
+          </div>
+        </div>
+        <div class="float f2">
+          <div class="row">
+            <span class="ico-dot" style="background:#E8F6EE;color:var(--success)"><i data-lucide="package-check"></i></span>
+            <div><strong>Encomenda · Apto 304</strong><small>Retirada confirmada 18:42</small></div>
+          </div>
+        </div>
+        <div class="float f3">
+          <div class="row">
+            <span class="ico-dot" style="background:#F8F1E2;color:var(--gold-deep)"><i data-lucide="calendar-check"></i></span>
+            <div><strong>Salão de festas</strong><small>Sáb, 14h–22h · aprovada</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="profiles" aria-label="Tipos de conta">
+    <div class="wrap profiles-grid">
+      <article class="profile">
+        <span class="ico-dot"><i data-lucide="user-cog"></i></span>
+        <div><h3>Síndico</h3><p>Dono do condomínio na plataforma. Aprova reservas, responde chamados e publica avisos.</p></div>
+      </article>
+      <article class="profile">
+        <span class="ico-dot"><i data-lucide="building-2"></i></span>
+        <div><h3>Administradora</h3><p>Gerencia vários condomínios e alterna entre eles em <code>Meus condomínios</code>.</p></div>
+      </article>
+      <article class="profile">
+        <span class="ico-dot"><i data-lucide="home"></i></span>
+        <div><h3>Condômino</h3><p>Abre chamados, reserva áreas, acompanha encomendas e registra ocorrências da sua unidade.</p></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="block kanban-sec" id="chamados">
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow">Chamados</span>
+        <h2>Cada problema tem dono, prioridade e status.</h2>
+        <p class="lead">Um quadro com três colunas. Arraste o card e o morador vê na hora que o chamado andou — com comentários no próprio card.</p>
+      </div>
+      <div class="board-shell">
+        <div class="board-top">
+          <h3>Residencial Jardim das Águias</h3>
+          <div class="legend">
+            <span><i style="background:var(--destructive)"></i>Alta</span>
+            <span><i style="background:var(--warning)"></i>Média</span>
+            <span><i style="background:var(--info)"></i>Baixa</span>
+          </div>
+        </div>
+        <div class="board-scroll">
+          <div class="board" id="board">
+            <div class="col" data-col="aberto"><div class="col-h">Em aberto <span class="count">0</span></div><div class="cards">
+              <div class="kcard p-alta" draggable="true" tabindex="0"><h4>Vazamento no subsolo, vaga 42</h4><div class="kmeta"><span class="pill">Alta</span><span><i data-lucide="message-square"></i> 3 · Bloco B</span></div></div>
+              <div class="kcard p-media" draggable="true" tabindex="0"><h4>Lâmpada queimada no hall do 7º andar</h4><div class="kmeta"><span class="pill">Média</span><span><i data-lucide="message-square"></i> 1 · Bloco A</span></div></div>
+              <div class="kcard p-baixa" draggable="true" tabindex="0"><h4>Sugestão: bicicletário coberto</h4><div class="kmeta"><span class="pill">Baixa</span><span><i data-lucide="message-square"></i> 5 · Apto 1102</span></div></div>
+            </div></div>
+            <div class="col" data-col="pendente"><div class="col-h">Pendente <span class="count">0</span></div><div class="cards">
+              <div class="kcard p-alta" draggable="true" tabindex="0"><h4>Portão da garagem travando</h4><div class="kmeta"><span class="pill">Alta</span><span><i data-lucide="message-square"></i> 4 · Aguardando técnico</span></div></div>
+              <div class="kcard p-baixa" draggable="true" tabindex="0"><h4>Pintura da guarita</h4><div class="kmeta"><span class="pill">Baixa</span><span><i data-lucide="message-square"></i> 2 · Orçamento</span></div></div>
+            </div></div>
+            <div class="col" data-col="encerrado"><div class="col-h">Encerrado <span class="count">0</span></div><div class="cards">
+              <div class="kcard p-media" draggable="true" tabindex="0"><h4>Interfone do 304 sem áudio</h4><div class="kmeta"><span class="pill">Média</span><span><i data-lucide="check"></i> Resolvido ontem</span></div></div>
+            </div></div>
+          </div>
+        </div>
+        <p class="board-hint"><i data-lucide="hand"></i> Experimente: arraste um card para outra coluna (no celular, toque no card para avançar o status).</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="modulos">
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow">Módulos</span>
+        <h2>O dia a dia do prédio, do interfone ao elevador.</h2>
+        <p class="lead">O síndico vê o resumo geral; o morador vê só o que é dele. Cada módulo conversa com o painel inicial.</p>
+      </div>
+      <div class="mods">
+        <article class="mod"><span class="ico-dot"><i data-lucide="layout-dashboard"></i></span><h3>Dashboard</h3><p>Chamados, reservas, encomendas e avisos num resumo — geral para o síndico, pessoal para o morador.</p></article>
+        <article class="mod"><span class="ico-dot"><i data-lucide="calendar-days"></i></span><h3>Reservas</h3><p>Pedidos de áreas comuns com aprovar, rejeitar ou cancelar. Calendário por mês, semana e dia.</p></article>
+        <article class="mod"><span class="ico-dot"><i data-lucide="package"></i></span><h3>Encomendas</h3><p>A portaria registra a chegada e o morador confirma a retirada.</p><span class="tag">Para prédios com porteiro</span></article>
+        <article class="mod"><span class="ico-dot"><i data-lucide="megaphone"></i></span><h3>Avisos</h3><p>Mural do condomínio, com os comunicados importantes fixados no topo.</p></article>
+        <article class="mod"><span class="ico-dot"><i data-lucide="notebook-pen"></i></span><h3>Livro de ocorrências</h3><p>Barulho, segurança, convivência ou dano: o morador registra e o síndico atualiza o status.</p></article>
+        <article class="mod"><span class="ico-dot"><i data-lucide="hard-hat"></i></span><h3>Prestadores</h3><p>Cadastro de quem presta serviço, com lembrete da próxima manutenção recorrente.</p></article>
+
+        <article class="mod wide">
+          <span class="ico-dot"><i data-lucide="building"></i></span>
+          <h3>Manutenção predial</h3>
+          <p>Ativos e equipamentos, plano de manutenção, ordens de serviço e um painel próprio. Exporta para .xlsx no mesmo formato da planilha de controle predial.</p>
+          <div class="xlsx"><div class="xlsx-scroll"><table>
+            <thead><tr><th>Ativo</th><th>Periodicidade</th><th>Próxima</th><th>Situação</th></tr></thead>
+            <tbody>
+              <tr><td>Elevador social</td><td>Mensal</td><td>02/10/2026</td><td class="st ok">Em dia</td></tr>
+              <tr><td>Bomba de recalque</td><td>Trimestral</td><td>28/09/2026</td><td class="st warn">Vence em 4 dias</td></tr>
+              <tr><td>Extintores (AVCB)</td><td>Anual</td><td>15/09/2026</td><td class="st late">Atrasada</td></tr>
+            </tbody>
+          </table></div></div>
+          <span class="tag">Exportar .xlsx</span>
+        </article>
+
+        <article class="mod"><span class="ico-dot"><i data-lucide="users"></i></span><h3>Moradores</h3><p>Edite dados, papel e unidade de cada pessoa, ou remova quem saiu.</p></article>
+        <article class="mod"><span class="ico-dot"><i data-lucide="door-open"></i></span><h3>Unidades</h3><p>Cadastro de unidades por bloco e número, com fração ideal.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="configurar" style="padding-top:0">
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow">Como começa</span>
+        <h2>Quatro perguntas e o sistema tem a cara do seu prédio.</h2>
+        <p class="lead">Depois do cadastro, a águia faz uma pergunta de cada vez. Responda aqui e veja o menu se montar ao lado.</p>
+      </div>
+      <div class="onb">
+        <div class="quiz">
+          <div class="quiz-top">
+            <div class="guide"><img src="assets/mascote.png" alt="" /></div>
+            <div class="bubble" id="bubble">Oi! Vou te ajudar a configurar o condomínio.</div>
+          </div>
+          <div class="progress" id="progress"><i></i><i></i><i></i><i></i></div>
+          <div id="qbox"></div>
+          <div class="q-nav">
+            <button class="btn btn-ghost" id="prev" type="button"><i data-lucide="arrow-left"></i> Voltar</button>
+            <button class="btn btn-navy" id="next" type="button">Próxima <i data-lucide="arrow-right"></i></button>
+          </div>
+        </div>
+        <aside class="preview" aria-live="polite">
+          <div class="preview-h"><b>Seu menu</b><small>prévia</small></div>
+          <div class="side" id="side"></div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="seguranca" style="padding-top:0">
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow">Segurança</span>
+        <h2>Cada condomínio fica no seu próprio cofre.</h2>
+      </div>
+      <div class="trust">
+        <div><h3><i data-lucide="shield-check"></i> Isolamento no banco</h3><p>Regras de acesso por linha no Postgres garantem que um condomínio nunca enxerga dados de outro — nem por engano.</p></div>
+        <div><h3><i data-lucide="key-round"></i> Cada um no seu papel</h3><p>Síndico, administradora e morador veem telas diferentes. O morador só acessa o que é da própria unidade.</p></div>
+        <div><h3><i data-lucide="cloud"></i> Infraestrutura gerenciada</h3><p>Banco, autenticação e permissões rodam no Supabase, com backups e senhas protegidas por padrão.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="final" id="cadastro">
+    <div class="wrap">
+      <div class="final-card">
+        <div>
+          <h2>Seu condomínio pronto para voar.</h2>
+          <p>Crie a conta como síndico ou administradora, responda as quatro perguntas e convide os moradores.</p>
+        </div>
+        <a class="btn btn-navy btn-lg" href="#topo" id="entrar">Criar conta grátis <i data-lucide="arrow-right"></i></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <img class="foot-logo" src="assets/logo.png" alt="Alpha Condomínios" />
+    <div class="foot-links"><a href="#chamados">Chamados</a><a href="#modulos">Módulos</a><a href="#seguranca">Segurança</a></div>
+    <small>© 2026 Alpha Condomínios</small>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script>
+(function () {
+  /* ---------- Fundo do hero: malha de linhas, eco da águia geométrica ---------- */
+  const cv = document.getElementById('lines');
+  const ctx = cv.getContext('2d');
+  function draw() {
+    const r = cv.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+    cv.width = r.width * dpr; cv.height = r.height * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, r.width, r.height);
+    let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    const pts = [];
+    const step = 120;
+    for (let y = -step; y < r.height + step; y += step)
+      for (let x = r.width * 0.35; x < r.width + step; x += step)
+        pts.push([x + (rnd() - .5) * 70, y + (rnd() - .5) * 70]);
+    ctx.lineWidth = 1;
+    for (let i = 0; i < pts.length; i++) for (let j = i + 1; j < pts.length; j++) {
+      const dx = pts[i][0] - pts[j][0], dy = pts[i][1] - pts[j][1], d = Math.hypot(dx, dy);
+      if (d < 150) {
+        const fade = Math.min(1, (pts[i][0] - r.width * 0.35) / (r.width * 0.4));
+        ctx.strokeStyle = (i + j) % 7 === 0 ? `rgba(201,164,92,${0.35 * fade})` : `rgba(11,37,69,${0.07 * fade})`;
+        ctx.beginPath(); ctx.moveTo(pts[i][0], pts[i][1]); ctx.lineTo(pts[j][0], pts[j][1]); ctx.stroke();
+      }
+    }
+  }
+  draw(); addEventListener('resize', draw);
+
+  /* ---------- Kanban ---------- */
+  const board = document.getElementById('board');
+  const cols = [...board.querySelectorAll('.col')];
+  const counts = () => cols.forEach(c => c.querySelector('.count').textContent = c.querySelectorAll('.kcard').length);
+  let dragged = null;
+  board.addEventListener('dragstart', e => { dragged = e.target.closest('.kcard'); if (dragged) { dragged.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; } });
+  board.addEventListener('dragend', () => { dragged && dragged.classList.remove('dragging'); dragged = null; cols.forEach(c => c.classList.remove('over')); });
+  cols.forEach(col => {
+    col.addEventListener('dragover', e => { e.preventDefault(); col.classList.add('over'); });
+    col.addEventListener('dragleave', e => { if (!col.contains(e.relatedTarget)) col.classList.remove('over'); });
+    col.addEventListener('drop', e => { e.preventDefault(); col.classList.remove('over'); if (dragged) { col.querySelector('.cards').appendChild(dragged); counts(); } });
+  });
+  const advance = card => {
+    const i = cols.indexOf(card.closest('.col'));
+    cols[(i + 1) % cols.length].querySelector('.cards').appendChild(card); counts(); card.focus();
+  };
+  const coarse = matchMedia('(pointer: coarse)').matches;
+  board.addEventListener('click', e => { const c = e.target.closest('.kcard'); if (c && coarse) advance(c); });
+  board.addEventListener('keydown', e => { const c = e.target.closest('.kcard'); if (c && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); advance(c); } });
+  counts();
+
+  /* ---------- Onboarding ---------- */
+  const state = { blocos: true, comercio: false, areas: ['Salão de festas', 'Churrasqueira', 'Piscina'], porteiro: true };
+  const areaOptions = ['Salão de festas', 'Churrasqueira', 'Piscina', 'Academia', 'Quadra', 'Espaço gourmet', 'Brinquedoteca'];
+  const steps = [
+    { key: 'blocos', q: 'O condomínio tem blocos?', say: 'Começando pela estrutura do prédio.' },
+    { key: 'comercio', q: 'O térreo tem comércio?', say: 'Lojas no térreo viram unidades comerciais.' },
+    { key: 'areas', q: 'Quais áreas os moradores podem reservar?', say: 'Marque quantas quiser — dá para adicionar outras.' },
+    { key: 'porteiro', q: 'O prédio tem porteiro?', say: 'Com portaria, eu ligo o módulo de Encomendas.' }
+  ];
+  let cur = 0, lastChanged = null;
+  const qbox = document.getElementById('qbox');
+  const icon = n => `<i data-lucide="${n}"></i>`;
+  const esc = s => s.replace(/[&<>"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
+
+  function renderQ() {
+    const s = steps[cur];
+    document.getElementById('bubble').textContent = s.say;
+    document.querySelectorAll('#progress i').forEach((b, i) => b.classList.toggle('on', i <= cur));
+    let body;
+    if (s.key === 'areas') {
+      const all = [...new Set([...areaOptions, ...state.areas])];
+      body = `<div class="chips">${all.map(a => `<button type="button" class="chip" data-area="${esc(a)}" aria-pressed="${state.areas.includes(a)}">${state.areas.includes(a) ? icon('check') : ''}${esc(a)}</button>`).join('')}</div>
+        <form class="add-row" id="addForm"><input id="newArea" placeholder="Outra área, ex.: Sauna" aria-label="Nova área de reserva" /><button class="btn btn-ghost" type="submit">${icon('plus')} Adicionar</button></form>`;
+    } else {
+      body = `<div class="yn"><button type="button" class="opt" data-v="1" aria-pressed="${state[s.key] === true}">${icon('check')} Sim</button><button type="button" class="opt" data-v="0" aria-pressed="${state[s.key] === false}">${icon('x')} Não</button></div>`;
+    }
+    qbox.innerHTML = `<div class="q-step">Pergunta ${cur + 1} de 4</div><div class="q-title">${s.q}</div>${body}`;
+    document.getElementById('prev').disabled = cur === 0;
+    document.getElementById('prev').style.visibility = cur === 0 ? 'hidden' : 'visible';
+    const next = document.getElementById('next');
+    next.innerHTML = cur === 3 ? `Recomeçar ${icon('rotate-ccw')}` : `Próxima ${icon('arrow-right')}`;
+    lucide.createIcons();
+    const f = document.getElementById('addForm');
+    if (f) f.addEventListener('submit', e => {
+      e.preventDefault(); const v = document.getElementById('newArea').value.trim();
+      if (v && !state.areas.includes(v)) { state.areas.push(v); lastChanged = 'reservas'; renderQ(); renderSide(); }
+    });
+  }
+  qbox.addEventListener('click', e => {
+    const o = e.target.closest('.opt'), c = e.target.closest('.chip');
+    if (o) { const k = steps[cur].key; state[k] = o.dataset.v === '1'; lastChanged = { blocos: 'unidades', comercio: 'unidades', porteiro: 'encomendas' }[k]; }
+    if (c) { const a = c.dataset.area; state.areas = state.areas.includes(a) ? state.areas.filter(x => x !== a) : [...state.areas, a]; lastChanged = 'reservas'; }
+    if (o || c) { renderQ(); renderSide(); }
+  });
+  document.getElementById('next').addEventListener('click', () => { cur = cur === 3 ? 0 : cur + 1; renderQ(); });
+  document.getElementById('prev').addEventListener('click', () => { if (cur > 0) { cur--; renderQ(); } });
+
+  function renderSide() {
+    const unid = [state.blocos ? 'Blocos A–C' : 'Torre única', state.comercio ? '+ lojas' : ''].filter(Boolean).join(' ');
+    const items = [
+      ['dashboard', 'layout-dashboard', 'Dashboard', ''],
+      ['chamados', 'kanban-square', 'Chamados', ''],
+      ['reservas', 'calendar-days', 'Reservas', state.areas.length ? `${state.areas.length} área${state.areas.length > 1 ? 's' : ''}` : 'nenhuma área', !state.areas.length],
+      ['encomendas', 'package', 'Encomendas', state.porteiro ? 'portaria ativa' : 'sem porteiro', !state.porteiro],
+      ['avisos', 'megaphone', 'Avisos', ''],
+      ['ocorrencias', 'notebook-pen', 'Livro de ocorrências', ''],
+      ['manutencao', 'building', 'Manutenção predial', ''],
+      ['unidades', 'door-open', 'Unidades', unid]
+    ];
+    document.getElementById('side').innerHTML = items.map(([id, ic, name, note, off]) =>
+      `<div class="side-item${off ? ' off' : ''}${lastChanged === id ? ' fresh' : ''}">${icon(ic)}<span>${name}</span><span class="note">${esc(note)}</span></div>`).join('');
+    lucide.createIcons();
+    if (lastChanged) setTimeout(() => document.querySelectorAll('.side-item.fresh').forEach(n => n.classList.remove('fresh')), 1200);
+    lastChanged = null;
+  }
+
+  lucide.createIcons();
+  renderQ(); renderSide();
+})();
+</script>
+</body>
+</html>
