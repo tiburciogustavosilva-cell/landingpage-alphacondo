@@ -326,6 +326,19 @@
     *, *::before, *::after { animation: none !important; transition: none !important; }
     html { scroll-behavior: auto; }
   }
+  /* Atendimento: o card inteiro é o link do WhatsApp */
+  .support {
+    display: grid; grid-template-columns: minmax(0, .8fr) 1fr; align-items: center;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 18px; overflow: hidden;
+    text-decoration: none; color: inherit; box-shadow: var(--shadow-card); transition: transform .2s, border-color .2s;
+  }
+  .support:hover { transform: translateY(-2px); border-color: #25D366; }
+  .support img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .support-body { padding: 40px; display: grid; gap: 14px; justify-items: start; }
+  .support-body h2 { font-size: clamp(28px, 3.6vw, 40px); font-weight: 900; color: var(--navy); }
+  .btn-wa { background: #25D366; color: var(--navy); }
+  .support:hover .btn-wa { transform: translateY(-1px); }
+  @media (max-width: 760px) { .support { grid-template-columns: 1fr; } .support-body { padding: 24px; } }
   /* WhatsApp flutuante */
   .wa-float {
     position: fixed; right: calc(20px + env(safe-area-inset-right, 0px)); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); z-index: 50;
@@ -572,6 +585,20 @@ document.body.classList.add('intro-on');
         <div><h3><i data-lucide="key-round"></i> Cada um no seu papel</h3><p>Síndico, administradora e morador veem telas diferentes. O morador só acessa o que é da própria unidade.</p></div>
         <div><h3><i data-lucide="cloud"></i> Infraestrutura gerenciada</h3><p>Banco, autenticação e permissões rodam no Supabase, com backups e senhas protegidas por padrão.</p></div>
       </div>
+    </div>
+  </section>
+
+  <section class="block" id="atendimento" style="padding-top:0">
+    <div class="wrap">
+      <a class="support" href="https://wa.me/556194037784?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20a%20Alpha%20Condom%C3%ADnios." target="_blank" rel="noopener">
+        <img src="assets/atendente.jpeg" alt="" width="686" height="720" loading="lazy" />
+        <div class="support-body">
+          <span class="eyebrow">Atendimento</span>
+          <h2>Ficou com dúvida? A águia atende no WhatsApp.</h2>
+          <p class="lead">Fale direto com o time da Alpha: tiramos dúvidas, mostramos a plataforma funcionando e ajudamos a configurar o seu condomínio.</p>
+          <span class="btn btn-wa btn-lg"><i data-lucide="message-circle"></i> Chamar no WhatsApp</span>
+        </div>
+      </a>
     </div>
   </section>
 
