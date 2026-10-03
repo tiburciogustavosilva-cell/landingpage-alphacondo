@@ -1024,6 +1024,162 @@
         }
       }
 
+      /* Planos */
+      .sim {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px 20px;
+        margin-bottom: 28px;
+        font-weight: 700;
+      }
+      .sim small {
+        color: var(--muted);
+        font-weight: 500;
+      }
+      .stepper {
+        display: inline-flex;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--surface);
+        overflow: hidden;
+      }
+      .stepper button {
+        width: 44px;
+        border: 0;
+        background: none;
+        font: 700 20px/1 var(--f-body);
+        color: var(--navy);
+        cursor: pointer;
+      }
+      .stepper button:hover {
+        background: var(--ground);
+      }
+      .stepper input {
+        width: 88px;
+        padding: 10px 0;
+        border: 0;
+        border-inline: 1px solid var(--line);
+        text-align: center;
+        font: 800 18px/1 var(--f-body);
+        color: var(--navy);
+        -moz-appearance: textfield;
+        appearance: textfield;
+      }
+      .stepper input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+      }
+      .plans {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        align-items: start;
+      }
+      .plan {
+        display: grid;
+        gap: 16px;
+        padding: 28px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--surface);
+        box-shadow: var(--shadow-card);
+      }
+      .plan h3 {
+        font-size: 22px;
+        font-weight: 900;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .plan .tag {
+        font: 700 11px/1 var(--f-body);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: var(--gradient-primary);
+        color: var(--navy);
+      }
+      .plan .price {
+        font: 900 34px/1 var(--f-head);
+      }
+      .plan .price small {
+        font: 600 14px var(--f-body);
+        color: var(--muted);
+      }
+      .plan .total {
+        padding: 10px 12px;
+        border-radius: 10px;
+        background: var(--ground);
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .plan .total b {
+        color: var(--navy);
+      }
+      .plan p {
+        color: var(--muted);
+        font-size: 15px;
+      }
+      .plan ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 8px;
+        font-size: 15px;
+      }
+      .plan li.all {
+        font-weight: 700;
+      }
+      .plan .btn {
+        width: 100%;
+      }
+      .plan .tag.free {
+        background: var(--success);
+        color: #fff;
+      }
+      .plan .trial {
+        margin-top: -8px;
+        text-align: center;
+        color: var(--success);
+        font-weight: 700;
+      }
+      .plan.featured {
+        background: var(--navy);
+        color: #fff;
+        border-color: var(--gold);
+        box-shadow: 0 20px 50px -20px rgba(11, 37, 69, 0.6);
+      }
+      .plan.featured p,
+      .plan.featured .price small {
+        color: #c7d3e6;
+      }
+      .plan.featured .total {
+        background: rgba(255, 255, 255, 0.08);
+        color: #c7d3e6;
+      }
+      .plan.featured .trial {
+        color: #6ee7a0;
+      }
+      .plan.featured .total b {
+        color: #fff;
+      }
+      .plans-note {
+        margin-top: 24px;
+        text-align: center;
+        color: var(--muted);
+      }
+      .plans-note b {
+        color: var(--navy);
+      }
+      @media (max-width: 900px) {
+        .plans {
+          grid-template-columns: 1fr;
+        }
+      }
+
       /* CTA final */
       .final {
         padding-block: 24px 88px;
@@ -1453,6 +1609,7 @@
           <a href="#modulos">Módulos</a>
           <a href="#configurar">Como começa</a>
           <a href="#seguranca">Segurança</a>
+          <a href="#planos">Planos</a>
         </nav>
         <div class="nav-cta">
           <a class="btn btn-ghost" href="#entrar">Entrar</a>
@@ -1717,6 +1874,14 @@
               </p>
             </article>
             <article class="mod">
+              <span class="ico-dot"><i data-lucide="vote"></i></span>
+              <h3>Assembleias</h3>
+              <p>
+                Votações digitais em tempo real, com resultado acompanhado ao
+                vivo e histórico de tudo que foi decidido.
+              </p>
+            </article>
+            <article class="mod">
               <span class="ico-dot"><i data-lucide="calendar-days"></i></span>
               <h3>Reservas</h3>
               <p>
@@ -1904,6 +2069,74 @@
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section class="block" id="planos" style="padding-top: 0">
+        <div class="wrap">
+          <div class="head">
+            <span class="eyebrow">Planos</span>
+            <h2>Um plano para cada momento do seu condomínio.</h2>
+          </div>
+          <div class="sim">
+            <label for="units">Quantas unidades seu condomínio possui?</label>
+            <span class="stepper">
+              <button type="button" data-step="-1" aria-label="Menos uma unidade">−</button>
+              <input id="units" type="number" min="1" max="10000" value="100" inputmode="numeric" />
+              <button type="button" data-step="1" aria-label="Mais uma unidade">+</button>
+            </span>
+            <small>Sem mensalidade mínima.</small>
+          </div>
+          <div class="plans">
+            <article class="plan">
+              <h3>🟢 Basic</h3>
+              <div class="price">R$ 0,99 <small>/ unidade / mês</small></div>
+              <div class="total" data-cents="99" aria-live="polite"></div>
+              <p>Indicado para condomínios que querem digitalizar suas assembleias e votações.</p>
+              <ul>
+                <li>🗳️ Assembleias e votações digitais</li>
+                <li>⚡ Votação em tempo real</li>
+                <li>📊 Acompanhamento dos resultados</li>
+                <li>📋 Histórico das votações</li>
+              </ul>
+              <a class="btn btn-ghost btn-lg" href="#cadastro">Começar com o Basic</a>
+            </article>
+            <article class="plan featured">
+              <h3>🔵 Pro <span class="tag">Recomendado</span> <span class="tag free">30 dias grátis</span></h3>
+              <div class="price">R$ 1,49 <small>/ unidade / mês</small></div>
+              <div class="total" data-cents="149" aria-live="polite"></div>
+              <p>Para condomínios que querem centralizar sua comunicação e organização.</p>
+              <ul>
+                <li class="all">Tudo do plano Basic</li>
+                <li>📢 Avisos aos condôminos</li>
+                <li>📝 Registro de ocorrências</li>
+                <li>📦 Gestão de encomendas</li>
+                <li>👥 Cadastro de moradores e unidades</li>
+                <li>🔔 Notificações</li>
+              </ul>
+              <a class="btn btn-brand btn-lg" href="#cadastro">Escolher o Pro</a>
+              <small class="trial">Experimente grátis por 30 dias.</small>
+            </article>
+            <article class="plan">
+              <h3>🟣 Premium</h3>
+              <div class="price">R$ 1,99 <small>/ unidade / mês</small></div>
+              <div class="total" data-cents="199" aria-live="polite"></div>
+              <p>A experiência completa para gestão operacional do condomínio.</p>
+              <ul>
+                <li class="all">Tudo do plano Pro</li>
+                <li>🔧 Gestão de manutenções</li>
+                <li>👷 Gestão de tarefas para colaboradores</li>
+                <li>📸 Registro fotográfico das tarefas realizadas</li>
+                <li>🏠 Planta baixa interativa do condomínio</li>
+                <li>📊 Dashboard com indicadores e insights</li>
+                <li>📈 Visão geral da operação do condomínio</li>
+              </ul>
+              <a class="btn btn-ghost btn-lg" href="#cadastro">Escolher o Premium</a>
+            </article>
+          </div>
+          <p class="plans-note">
+            Você paga apenas pelas unidades do seu condomínio. <b>Sem mensalidade mínima.</b>
+          </p>
         </div>
       </section>
 
@@ -2361,6 +2594,26 @@
             "noopener"
           );
         });
+
+        /* ---------- Simulador de planos ---------- */
+        const units = document.getElementById("units");
+        const brl = (cents) =>
+          (cents / 100).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+        function renderPlans() {
+          const n = Math.max(0, Math.floor(+units.value) || 0);
+          document.querySelectorAll(".plan .total").forEach((el) => {
+            const c = +el.dataset.cents; // centavos: evita erro de ponto flutuante
+            el.innerHTML = `${n} × ${brl(c)} = <b>${brl(n * c)}/mês</b>`;
+          });
+        }
+        document.querySelectorAll("[data-step]").forEach((b) =>
+          b.addEventListener("click", () => {
+            units.value = Math.min(10000, Math.max(1, (+units.value || 0) + +b.dataset.step));
+            renderPlans();
+          })
+        );
+        units.addEventListener("input", renderPlans);
+        renderPlans();
       })();
     </script>
   </body>
