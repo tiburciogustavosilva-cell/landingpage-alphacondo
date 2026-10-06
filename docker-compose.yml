@@ -1,0 +1,22 @@
+services:
+
+  landing:
+    image: ghcr.io/tiburciogustavosilva-cell/condominio-landing:latest
+
+    networks:
+      - aquilaNet
+
+    deploy:
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.aquila-landing.rule=Host(`aquilacondominios.com.br`) || Host(`www.aquilacondominios.com.br`)
+        - traefik.http.routers.aquila-landing.entrypoints=websecure
+        - traefik.http.routers.aquila-landing.tls=true
+        - traefik.http.services.aquila-landing.loadbalancer.server.port=80
+
+    restart: unless-stopped
+
+
+networks:
+  aquilaNet:
+    external: true
