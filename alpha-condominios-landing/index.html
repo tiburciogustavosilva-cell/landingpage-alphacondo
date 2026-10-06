@@ -646,10 +646,11 @@
       /* Módulos */
       .mods {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 14px;
       }
       .mod {
+        min-width: 0;
         background: var(--surface);
         border: 1px solid var(--line);
         border-radius: var(--radius);
@@ -749,12 +750,12 @@
       }
       @media (max-width: 1000px) {
         .mods {
-          grid-template-columns: repeat(2, 1fr);
+          grid-template-columns: repeat(2, minmax(0, 1fr));
         }
       }
       @media (max-width: 560px) {
         .mods {
-          grid-template-columns: 1fr;
+          grid-template-columns: minmax(0, 1fr);
         }
         .mod.wide {
           grid-column: auto;
@@ -976,7 +977,7 @@
       }
       @media (max-width: 900px) {
         .onb {
-          grid-template-columns: 1fr;
+          grid-template-columns: minmax(0, 1fr);
         }
         .preview {
           position: static;
@@ -1354,10 +1355,10 @@
         visibility: hidden;
       }
       .intro-phrase {
-        font: 900 clamp(32px, 6vw, 64px) / 1.15 var(--f-head);
+        font: 900 clamp(26px, 4vw + 16px, 64px) / 1.15 var(--f-head);
         color: var(--navy);
         letter-spacing: -0.01em;
-        max-width: 16ch;
+        max-width: min(16ch, 100%);
       }
       .intro-phrase .w {
         display: inline-block;
@@ -1513,6 +1514,114 @@
         width: 34px;
         height: 34px;
         fill: #fff;
+      }
+
+      /* Ajustes de responsividade */
+      html {
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+      }
+      img {
+        max-width: 100%;
+      }
+      .wrap {
+        padding-inline: max(20px, env(safe-area-inset-left, 0px))
+          max(20px, env(safe-area-inset-right, 0px));
+      }
+      .btn {
+        line-height: 1.2;
+        text-align: center;
+      }
+      @media (max-width: 760px) {
+        section.block {
+          padding-block: 64px;
+        }
+        .profiles {
+          padding-block: 16px 56px;
+        }
+        .head {
+          margin-bottom: 28px;
+        }
+        .lead {
+          font-size: 17px;
+        }
+        .final {
+          padding-block: 16px 64px;
+        }
+        .support img {
+          max-height: 300px;
+          object-position: center top;
+        }
+        /* evita o zoom automático do iOS ao focar em campos */
+        .lead-form input,
+        .lead-form select,
+        .add-row input {
+          font-size: 16px;
+        }
+      }
+      @media (max-width: 520px) {
+        .hero {
+          padding-block: 36px 28px;
+        }
+        .hero-actions .btn,
+        .sec-cta .btn {
+          width: 100%;
+        }
+        .quiz {
+          padding: 22px;
+        }
+        .plan {
+          padding: 22px;
+        }
+        .final-card {
+          padding: 26px 18px;
+          border-radius: 18px;
+        }
+        .support-body {
+          padding: 22px;
+        }
+        .foot {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .wa-float {
+          width: 54px;
+          height: 54px;
+          right: calc(14px + env(safe-area-inset-right, 0px));
+          bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+        }
+        .wa-float svg {
+          width: 30px;
+          height: 30px;
+        }
+      }
+      @media (max-width: 360px) {
+        .emblem {
+          width: 42px;
+        }
+        .wordmark b {
+          font-size: 17px;
+        }
+        .nav-cta .btn {
+          padding: 10px 14px;
+          font-size: 14px;
+        }
+        .hero h1 {
+          font-size: 34px;
+        }
+        .btn-lg {
+          padding: 15px 16px;
+          font-size: 15px;
+        }
+        .stepper input {
+          width: 72px;
+        }
+        .q-nav {
+          flex-wrap: wrap;
+        }
+        .q-nav .btn {
+          flex: 1 1 auto;
+        }
       }
     </style>
   </head>
