@@ -6,12 +6,127 @@
       name="viewport"
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
+    <title>Áquila Condomínios | Sistema de gestão de condomínios</title>
     <meta
       name="description"
-      content="Áquila Condomínios: chamados, reservas, encomendas, avisos e manutenção predial num painel só."
+      content="Sistema de gestão de condomínios para síndicos, administradoras e moradores: chamados, reservas, encomendas, assembleias digitais e manutenção predial num painel só."
     />
-    <link rel="icon" type="image/png" href="assets/emblema.png" />
-    <title>Áquila Condomínios</title>
+    <link rel="canonical" href="https://aquilacondominios.com.br/" />
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1"
+    />
+    <meta name="theme-color" content="#0b2545" />
+    <meta name="author" content="Áquila Condomínios" />
+
+    <!-- Ícones -->
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Compartilhamento (WhatsApp, Facebook, LinkedIn, X) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content="Áquila Condomínios" />
+    <meta property="og:url" content="https://aquilacondominios.com.br/" />
+    <meta
+      property="og:title"
+      content="Áquila Condomínios | Tudo do condomínio em um painel só"
+    />
+    <meta
+      property="og:description"
+      content="Chamados, reservas, encomendas, avisos e manutenção predial organizados para o síndico, a administradora e cada morador."
+    />
+    <meta
+      property="og:image"
+      content="https://aquilacondominios.com.br/assets/og-image.jpg"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Áquila Condomínios: tudo do condomínio em um painel só"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Áquila Condomínios | Tudo do condomínio em um painel só"
+    />
+    <meta
+      name="twitter:description"
+      content="Chamados, reservas, encomendas, avisos e manutenção predial organizados para o síndico, a administradora e cada morador."
+    />
+    <meta
+      name="twitter:image"
+      content="https://aquilacondominios.com.br/assets/og-image.jpg"
+    />
+
+    <!-- Dados estruturados para o Google -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://aquilacondominios.com.br/#organizacao",
+            "name": "Áquila Condomínios",
+            "url": "https://aquilacondominios.com.br/",
+            "logo": "https://aquilacondominios.com.br/icon-512.png",
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "telephone": "+55-61-9403-7784",
+              "contactType": "customer service",
+              "areaServed": "BR",
+              "availableLanguage": "Portuguese"
+            }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://aquilacondominios.com.br/#site",
+            "url": "https://aquilacondominios.com.br/",
+            "name": "Áquila Condomínios",
+            "inLanguage": "pt-BR",
+            "publisher": { "@id": "https://aquilacondominios.com.br/#organizacao" }
+          },
+          {
+            "@type": "SoftwareApplication",
+            "name": "Áquila Condomínios",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "Web",
+            "url": "https://aquilacondominios.com.br/",
+            "image": "https://aquilacondominios.com.br/assets/og-image.jpg",
+            "description": "Sistema de gestão de condomínios com chamados, reservas, encomendas, avisos, assembleias digitais, livro de ocorrências e manutenção predial.",
+            "publisher": { "@id": "https://aquilacondominios.com.br/#organizacao" },
+            "offers": [
+              {
+                "@type": "Offer",
+                "name": "Basic",
+                "price": "0.99",
+                "priceCurrency": "BRL",
+                "description": "Por unidade, por mês"
+              },
+              {
+                "@type": "Offer",
+                "name": "Pro",
+                "price": "1.49",
+                "priceCurrency": "BRL",
+                "description": "Por unidade, por mês. 30 dias grátis."
+              },
+              {
+                "@type": "Offer",
+                "name": "Premium",
+                "price": "1.99",
+                "priceCurrency": "BRL",
+                "description": "Por unidade, por mês"
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+
+    <link rel="preload" as="image" href="assets/mascote.webp" fetchpriority="high" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -26,7 +141,7 @@
         --navy-2: #163a6b;
         --polo: #2f5ba8;
         --gold: #c9a45c;
-        --gold-deep: #9c7632;
+        --gold-deep: #84612a;
         --ground: #f4f7fb;
         --surface: #ffffff;
         --line: #dce4ee;
@@ -432,7 +547,7 @@
         background: #eef2f8;
         color: var(--navy);
       }
-      .profile h3 {
+      .profile h2 {
         font-size: 19px;
         font-weight: 800;
       }
@@ -618,7 +733,10 @@
         --p: var(--info);
       }
       .p-media .pill {
-        color: #9a6505;
+        color: #8a5a04;
+      }
+      .p-baixa .pill {
+        color: #1d55c4;
       }
       .board-hint {
         margin-top: 12px;
@@ -1138,7 +1256,7 @@
         width: 100%;
       }
       .plan .tag.free {
-        background: var(--success);
+        background: #157a40;
         color: #fff;
       }
       .plan .trial {
@@ -1358,6 +1476,7 @@
         font: 900 clamp(26px, 4vw + 16px, 64px) / 1.15 var(--f-head);
         color: var(--navy);
         letter-spacing: -0.01em;
+        text-wrap: balance;
         max-width: min(16ch, 100%);
       }
       .intro-phrase .w {
@@ -1627,17 +1746,18 @@
   </head>
   <body>
     <div class="intro" id="intro" role="presentation">
-      <h2
+      <div
         class="intro-phrase"
         id="introPhrase"
-        aria-label="Seu condomínio pronto para voar."
       >
         Seu condomínio pronto para voar.
-      </h2>
+      </div>
       <img
         class="intro-logo"
         id="introLogo"
-        src="assets/logo.png"
+        src="assets/logo.webp"
+        width="480"
+        height="366"
         alt="Áquila Condomínios"
       />
       <span class="intro-skip">Toque para pular</span>
@@ -1709,8 +1829,14 @@
 
     <header class="nav">
       <div class="wrap nav-in">
-        <a class="brand" href="#topo" aria-label="Áquila Condomínios — início">
-          <img class="emblem" src="assets/emblema.png" alt="" />
+        <a class="brand" href="#topo">
+          <img
+            class="emblem"
+            src="assets/emblema.webp"
+            width="160"
+            height="107"
+            alt=""
+          />
           <span class="wordmark"><b>ÁQUILA</b><span>CONDOMÍNIOS</span></span>
         </a>
         <nav class="nav-links" aria-label="Principal">
@@ -1764,7 +1890,10 @@
           <div class="stage rise d2">
             <div class="mascot">
               <img
-                src="assets/mascote.png"
+                src="assets/mascote.webp"
+                width="686"
+                height="720"
+                fetchpriority="high"
                 alt="Mascote da Áquila Condomínios: uma águia sorridente de camisa polo azul acenando"
               />
             </div>
@@ -1816,7 +1945,7 @@
           <article class="profile">
             <span class="ico-dot"><i data-lucide="user-cog"></i></span>
             <div>
-              <h3>Síndico</h3>
+              <h2>Síndico</h2>
               <p>
                 Dono do condomínio na plataforma. Aprova reservas, responde
                 chamados e publica avisos.
@@ -1826,7 +1955,7 @@
           <article class="profile">
             <span class="ico-dot"><i data-lucide="building-2"></i></span>
             <div>
-              <h3>Administradora</h3>
+              <h2>Administradora</h2>
               <p>
                 Gerencia vários condomínios e alterna entre eles em
                 <code>Meus condomínios</code>.
@@ -1836,7 +1965,7 @@
           <article class="profile">
             <span class="ico-dot"><i data-lucide="home"></i></span>
             <div>
-              <h3>Condômino</h3>
+              <h2>Condômino</h2>
               <p>
                 Abre chamados, reserva áreas, acompanha encomendas e registra
                 ocorrências da sua unidade.
@@ -2118,7 +2247,7 @@
           <div class="onb">
             <div class="quiz">
               <div class="quiz-top">
-                <div class="guide"><img src="assets/mascote.png" alt="" /></div>
+                <div class="guide"><img src="assets/mascote.webp" alt="" loading="lazy" /></div>
                 <div class="bubble" id="bubble">
                   Oi! Vou te ajudar a configurar o condomínio.
                 </div>
@@ -2259,7 +2388,7 @@
             rel="noopener"
           >
             <img
-              src="assets/atendente.jpeg"
+              src="assets/atendente.webp"
               alt=""
               width="686"
               height="720"
@@ -2344,7 +2473,14 @@
 
     <footer>
       <div class="wrap foot">
-        <img class="foot-logo" src="assets/logo.png" alt="Áquila Condomínios" />
+        <img
+          class="foot-logo"
+          src="assets/logo.webp"
+          width="480"
+          height="366"
+          loading="lazy"
+          alt="Áquila Condomínios"
+        />
         <div class="foot-links">
           <a href="#chamados">Chamados</a><a href="#modulos">Módulos</a
           ><a href="#seguranca">Segurança</a>
